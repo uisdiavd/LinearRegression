@@ -20,7 +20,7 @@ dfr = pd.DataFrame(views).reset_index()
 # Linear regression per country
 model = LinearRegression()
 y = pd.DataFrame([1, 3, 7, 14, 30, 60])
-print(type(y))
+print(info(y))
 """
 for i in range(len(dfr['Country'])):
     X = dfr[['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']]
