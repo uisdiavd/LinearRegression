@@ -19,10 +19,12 @@ dfr = pd.DataFrame(views).reset_index()
 
 # Linear regression per country
 model = LinearRegression()
-y = np.array([1, 3, 7, 14, 30, 60])
+y = pd.DataFrame([1, 3, 7, 14, 30, 60])
+print(type(y))
+"""
 for i in range(len(dfr['Country'])):
     X = dfr[['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']]
     #X = X.dropna()
     model.fit(X,y)
     #print(model.predict(X))
-    
+"""
