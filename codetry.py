@@ -19,13 +19,14 @@ print('dfr: \n', dfr.head())
 
 # Linear regression per country
 model = LinearRegression()
-y = pd.DataFrame([1, 3, 7, 14, 30, 60]) # Fix dataframe creation code
+y = pd.DataFrame([1, 3, 7, 14, 30, 60])
 for i in range(len(dfr['Country'])):
-    X = dfr[['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']].iloc[i].values.reshape(-1, 1) #defining X is different here than in the generated response so info and dropna cannot be used on this type
-    print('X type: \n', type(X))
-    #
-    model.fit(X,y)
-    print(model.predict(X))
+    data = dfr[['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']].iloc[1].values.reshape(-1,1)
+    X = pd.DataFrame(data)
+    X = X.dropna()
+    print(type(X))
+    #model.fit(X,y)
+    #print(model.predict(X))
     
 
 
