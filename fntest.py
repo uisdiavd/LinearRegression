@@ -6,7 +6,7 @@ pd.set_option('display.max_columns', None)
 
 # Read the CSV file into a DataFrame
 df = pd.read_csv('top_200_youtubers.csv')
-
+"""
 from sklearn.linear_model import LinearRegression
 
 # Prepare data for regression
@@ -21,9 +21,12 @@ dfr = pd.DataFrame(views).reset_index()
 model = LinearRegression()
 y = pd.DataFrame([1, 3, 7, 14, 30, 60])
 for i in range(len(dfr['Country'])):
-    data = dfr[['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']].iloc[1].values.reshape(-1,1)
+    data = dfr[['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']].iloc[i].values.reshape(-1,1)
     X = pd.DataFrame(data)
     X = X.dropna()
-    print(type(X))
+    print(type(X), "\n", X.head())
     #model.fit(X,y)
     #print(model.predict(X))
+"""
+
+df.to_csv('FeatureData.csv', sep='|')

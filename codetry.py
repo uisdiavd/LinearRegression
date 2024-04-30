@@ -1,3 +1,9 @@
+"""
+Prompt:
+Please create a new table with the countries on the list and the average likes of each channel in that country.
+Next, add a column that shows the expected views for the next 90 days based on the trends found the Avg. 1 Day views up until the Avg. 60 Day views column.
+"""
+
 import pandas as pd
 import numpy as np
 
@@ -21,17 +27,13 @@ print('dfr: \n', dfr.head())
 model = LinearRegression()
 y = pd.DataFrame([1, 3, 7, 14, 30, 60])
 for i in range(len(dfr['Country'])):
-    data = dfr[['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']].iloc[1].values.reshape(-1,1)
+    data = dfr[['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']].iloc[i].values.reshape(-1,1)
     X = pd.DataFrame(data)
     X = X.dropna()
     print(type(X))
     #model.fit(X,y)
     #print(model.predict(X))
     
-
-
-
-
 
 """
 #print("X: ", X.info())
