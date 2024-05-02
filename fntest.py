@@ -66,7 +66,7 @@ for r in range(len(dfr['Country'])): # This is a per-row iterative
 #x   if l <= len(data):    
 #   for l in enumerate(data): runs into indices error
 #   for l in range(len(data)): runs into index out of range error
-    for l in range(len(data)):
+    for l,d in enumerate(data):
         print('l value: ', l)
 
    

@@ -40,7 +40,7 @@ for r in range(len(dfr['Country'])):
     adjustment = 0
 
 # Iterate over data to clean null or zero values in training data and corresponding target data
-    for l in range(len(data)):
+    for l,d in enumerate(data):
         # Test print for troubleshooting, displays index of value being evaluated
 #        print('l value: ', l)
    
