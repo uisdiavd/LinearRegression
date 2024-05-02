@@ -64,6 +64,25 @@ for r in range(len(dfr['Country'])):
             # Increase adjustment value to account for length of target list after removing a value
             adjustment += 1
 
-        # Print data row number with final set of target values
-        print('Row: ', r)
-        print('Target values: ', targets)
+        # Test print data row number with final set of target values
+#        print('Row: ', r)
+#        print('Target values: ', targets)
+
+    # Convert target values into a dataframe
+    y = pd.DataFrame(targets)
+
+    # Convert training data to dataframe to enable removal of missing values
+    X = pd.DataFrame(data)
+    # Clean zero values from training data dataframe
+    X = X[X[0] != 0].reset_index()
+
+    # Convert column names to strings
+    X.columns = X.columns.astype(str)
+    y.columns = y.columns.astype(str)
+
+    # Test print dataframes
+    print('X: ', type(X), X, '\n')
+    print('y: ', type(y), y)
+
+    # Linear regression model fit
+#    model.fit(X,y)

@@ -58,6 +58,7 @@ for r in range(len(dfr['Country'])):
             delvalue = targets[t]
             targets.remove(delvalue)
 
+
             # Test print with latest target value corresponding to training data zero value removed
 #            print('Targets after zero removed: ', targets)
 
@@ -65,16 +66,27 @@ for r in range(len(dfr['Country'])):
             adjustment += 1
 
         # Print data row number with final set of target values
-        print('Row: ', r)
-        print('Target values: ', targets)
+#        print('Row: ', r)
+#        print('Target values: ', targets)
 
     # Convert target values into a dataframe
     y = pd.DataFrame(targets)
 
+    # Clean zero values from training data
+#    data.remove(0)
     # Convert training data to dataframe to enable removal of missing values
     X = pd.DataFrame(data)
     # Clean missing values from training data dataframe
-    X = X.dropna()
+#    X = X.dropna()
+    X = X[X[0] != 0].reset_index()
+
+    # Convert column names to strings
+    X.columns = X.columns.astype(str)
+    y.columns = y.columns.astype(str)
+
+    # Test print dataframes
+    print('X: ', type(X), X, '\n')
+    print('y: ', type(y), y)
 
     # Linear regression model fit
     model.fit(X,y)
