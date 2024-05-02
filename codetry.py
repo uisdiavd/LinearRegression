@@ -64,6 +64,6 @@ for r in range(len(dfr['Country'])):
             # Increase adjustment value to account for length of target list after removing a value
             adjustment += 1
 
-        # Print data row number with final set of target values
+        # Test print data row number with final set of target values
         print('Row: ', r)
         print('Target values: ', targets)
