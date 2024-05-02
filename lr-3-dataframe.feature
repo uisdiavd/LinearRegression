@@ -5,7 +5,7 @@ I need the training data can be converted to a dataframe
 So that null values can be cleared
 
 Background:
-    Given the appropriately prepared training data for linear regression on average views of a single country from an original data set
+    Given the appropriately prepared training data array for linear regression on average views of a single country from an original data set
     [[  46422.        ]
  [ 575767.91666667]
  [1048158.95      ]
