@@ -44,10 +44,6 @@ for r in range(len(dfr['Country'])):
         # Test print for troubleshooting, displays index of value being evaluated
 #        print('l value: ', l)
    
-        # If nan, then clean corresponding value
-        # Initialize nancheck to iterate over training data list
-        nancheck = np.isnan(data[l])
-
         # If training data point is 0, then clean corresponding target value
         if data[l] == 0:
             # Test print confirms that the if statement is running correctly

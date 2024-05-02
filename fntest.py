@@ -69,30 +69,6 @@ for r in range(len(dfr['Country'])): # This is a per-row iterative
     for l,d in enumerate(data):
         print('l value: ', l)
 
-   
-        # If nan, then clean corresponding value
-        nancheck = np.isnan(data[l])
-
-        # Test print confirms nancheck functions as null indicator
-        #print('nancheck row ', r, '\n nancheck value: ', nancheck)
-        """
-        if nancheck:
-            # Test print confirms that the if statement is running correctly
-            #print('None data row: ', r, '\n', 'None data index: ', rl
-
-            # Targeted index accounts for changing length of target list after removing a value
-            t = l - adjustment
-
-            # Value to be removed from the target values list
-            delvalue = targets[t]
-            targets.remove(delvalue)
-
-            # Test print
-            print('Targets after null removed: ', targets)
-
-            adjustment += 1
-        """
-
         # If 0, then clean corresponding value
         if data[l] == 0:
             # Test print confirms that the if statement is running correctly
