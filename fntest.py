@@ -7,13 +7,13 @@ pd.set_option('display.max_columns', None)
 # Read the CSV file into a DataFrame
 df = pd.read_csv('top_200_youtubers.csv')
 
+"""
 # Export for creating feature file
 df = df.sort_values(by=['Country'])
 df.to_csv('FeatureData.csv', sep='|')
-
 """
-#Linear regression function test area
 
+#Linear regression function test area
 from sklearn.linear_model import LinearRegression
 
 # Prepare data for regression
@@ -26,23 +26,67 @@ dfr = pd.DataFrame(views).reset_index()
 
 # Linear regression per country
 model = LinearRegression()
+"""
+# Defining target data without accounting for missing values in training data
 y = pd.DataFrame([1, 3, 7, 14, 30, 60])
-print(y)
+#print(y)
 # CSV export for feature
 #y.to_csv('y_dataframe.csv')
+"""
+
+# Defining target data as a list for use with removing corresponding missing values from training data
+targets = [1, 3, 7, 14, 30, 60]
+# Test prints
+#print(type(targets))
+#print(targets[0])
 
 
-for i in range(3): # len(dfr['Country'])):
+# Iterate over prepared data to extract training data for one country at a time
+for i in range(len(dfr['Country'])):
     data = dfr[['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']].iloc[i].values.reshape(-1,1)
+    # Test print confirms that 'data' can be used with index
+    #print("data[0]: ", data[0])
+    
+    # Working conditional statement 
+    # Iterate over training data to find null values and remove corresponding values from target data
+    # Test print
+    #print('len(data)', len(data))
+    
+    for r in range(len(data)):
+        nancheck = np.isnan(data[r])
+        # Test print confirms nancheck functions as null indicator
+        #print('nancheck row ', i, '\n nancheck value: ', nancheck)
+        # If nan, then clean corresponding value
+        if nancheck:
+            # Test print confirms that the if statement is running correctly
+            print('None data row: ', i, '\n', 'None data index: ', r)
+            deltarget = targets[r]
+            targets.remove(deltarget)
+        # If 0, then clean corresponding value
+        if data[r] == 0:
+            # Test print confirms that the if statement is running correctly
+            print('Zero data row: ', i, '\n',  'Zero data index: ', r)
+            #targets[r].remove()
+    """
+        # turn targets into a dataframe for use with lr model after removing data corresponding to null values in target data set
+        y = pd.DataFrame(targets)
+        # Test prints
+        #print(type(y))
+        #print(y)
+    
+    # Convert training data to dataframe to enable removal of missing values
     X = pd.DataFrame(data)
-"""
-    # CSV export for feature (failed)
-    #row = i
-    #X.to_csv(f'x_dataframe-{i}.csv')
-"""
+    # Clean missing values from training data dataframe
     X = X.dropna()
+    # Test prints
+    print(
+        'Iteration: ', i,
+        '\n X: \n', X,
+        '\n y: \n', y
+    )
     #print(type(X), "\n", X.head())
     #model.fit(X,y)
     #print(model.predict(X))
+
 
 """
