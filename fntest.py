@@ -68,6 +68,16 @@ for r in range(len(dfr['Country'])):
         print('Row: ', r)
         print('Target values: ', targets)
 
+    # Convert target values into a dataframe
+    y = pd.DataFrame(targets)
+
+    # Convert training data to dataframe to enable removal of missing values
+    X = pd.DataFrame(data)
+    # Clean missing values from training data dataframe
+    X = X.dropna()
+
+    # Linear regression model fit
+    model.fit(X,y)
 
 """
         # turn targets into a dataframe for use with lr model after removing data corresponding to null values in target data set
