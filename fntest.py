@@ -67,10 +67,6 @@ for r in range(len(dfr['Country'])):
         # Print data row number with final set of target values
         print('Row: ', r)
         print('Target values: ', targets)
-
-
-
-
 """
         # turn targets into a dataframe for use with lr model after removing data corresponding to null values in target data set
         y = pd.DataFrame(targets)
