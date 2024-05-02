@@ -1,7 +1,7 @@
 Feature: Linear regression for average views program should convert training data into a dataframe for use in the linear regression model
 
 As a programmer for the linear regression program anlyzing average views data
-I need the training data can be converted to a dataframe 
+I need the training data to be converted to a dataframe 
 So that null values can be cleared
 
 Background:
