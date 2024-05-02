@@ -79,7 +79,6 @@ for r in range(len(dfr['Country'])):
     # Linear regression model fit
     model.fit(X,y)
 
-
 """
         # turn targets into a dataframe for use with lr model after removing data corresponding to null values in target data set
         y = pd.DataFrame(targets)
