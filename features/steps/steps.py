@@ -1,16 +1,16 @@
 @given(u'the following data from an original data set')
 def step_impl(context):
-    
+    pass
 
 
 @given(u'the original data set')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Given the original data set')
+    pass
 
 
 @when(u'I load the original data set into the linear regression program for predicting average views at a future day')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I load the original data set into the linear regression program for predicting average views at a future day')
+    context.table
 
 
 @then(u'there should be a new dataset with only the following columns: \'Country\', \'Avg. 1 Day\', \'Avg. 3 Day\', \'Avg. 7 Day\', \'Avg. 14 Day\', \'Avg. 30 day\', \'Avg. 60 day\'')
