@@ -1,6 +1,6 @@
 @given(u'the following data from an original data set')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Given the following data from an original data set')
+    
 
 
 @given(u'the original data set')

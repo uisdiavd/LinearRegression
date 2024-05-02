@@ -8,10 +8,10 @@ pd.set_option('display.max_columns', None)
 df = pd.read_csv('top_200_youtubers.csv')
 
 # Export for creating feature file
-"""
+df = df.sort_values(by=['Country'])
 df.to_csv('FeatureData.csv', sep='|')
-"""
 
+"""
 #Linear regression function test area
 
 from sklearn.linear_model import LinearRegression
@@ -35,14 +35,14 @@ print(y)
 for i in range(3): # len(dfr['Country'])):
     data = dfr[['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']].iloc[i].values.reshape(-1,1)
     X = pd.DataFrame(data)
-    """
+"""
     # CSV export for feature (failed)
-    row = i
-    X.to_csv(f'x_dataframe-{i}.csv')
-    """
+    #row = i
+    #X.to_csv(f'x_dataframe-{i}.csv')
+"""
     X = X.dropna()
     #print(type(X), "\n", X.head())
     #model.fit(X,y)
     #print(model.predict(X))
 
-
+"""
