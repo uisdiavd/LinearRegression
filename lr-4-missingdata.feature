@@ -14,12 +14,12 @@ And the first value in the training data is null
 When null values are dropped from the training dataframe
 Then there should be no null data in the training dataframe
 And the target data set should be 
-   0
-0  3
-1  7
-2  14
-3  30
-4  60
+|     | 0   |
+| 0   | 3   |
+| 1   | 7   |
+| 2   | 14  |
+| 3   | 30  |
+| 4   | 60  |
 
 Scenario: Two null values
 Given a prepared training data set for linear regression on average views of a single country
@@ -27,8 +27,8 @@ And the first two values in the training data is null
 When null values are dropped from the training dataframe
 Then there should be no null data in the training dataframe
 And the target data set should be 
-   0
-0  7
-1  14
-2  30
-3  60
+|     | 0   |
+| 0   | 7   |
+| 1   | 14  |
+| 2   | 30  |
+| 3   | 60  |
