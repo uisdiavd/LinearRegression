@@ -11,15 +11,38 @@ from sklearn.linear_model import LinearRegression
 
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
-
+"""
+class YouTubeChannel:
+    def __init__(self, csv):
+        self.Country
+        self.Avg. 1 Day
+        self.Avg. 3 Day
+        self.Avg. 7 Day
+        self.Avg. 14 Day
+        self.Avg. 30 day
+        self.Avg. 60 day
+    
+    def load
+"""
+class YouTubeChannelManager:
+    def __init__(self):
+        self.YouTubeChannels = []
+        
+    def ProcessYouTubeChannels(self, csv = 'top_200_youtubers.csv', groupby_filter = 'Country', cols = ['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']):
+        # Read the CSV file into a DataFrame
+        df = pd.read_csv(csv)
+        
+        # Prepare data for regression
+        views = df.groupby(groupby_filter)[cols].mean().fillna(0)
+        dfr = pd.DataFrame(views).reset_index()
+        
+        for r in range(len(dfr[groupby_filter])):
+            # Initialize training and target data for iteration to find null or zero values
+            # Define training data as a list to enable iteration per country for null or zero values
+            data = dfr[cols].iloc[r].values.reshape(-1, 1)
+            print(data)
+"""
 class AverageViewsLinearRegression(df):
-    # Read the CSV file into a DataFrame
-    df = pd.read_csv('top_200_youtubers.csv')
-
-    # Prepare data for regression
-    cols = ['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']
-    views = df.groupby('Country')[['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']].mean().fillna(0)
-    dfr = pd.DataFrame(views).reset_index()
 
     # Test print
     #print('dfr: \n', dfr.head())
@@ -28,10 +51,7 @@ class AverageViewsLinearRegression(df):
     model = LinearRegression()
 
     # Iterate over prepared data to extract training data for one country at a time
-    for r in range(len(dfr['Country'])):
-        # Initialize training and target data for iteration to find null or zero values
-        # Define training data as a list to enable iteration per country for null or zero values
-        data = dfr[['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']].iloc[r].values.reshape(-1,1)
+
 
         # Define target data as a list for use with removing corresponding missing values from training data
         targets = [1, 3, 7, 14, 30, 60]
@@ -86,3 +106,4 @@ class AverageViewsLinearRegression(df):
 
         # Linear regression model fit
     #    model.fit(X,y)
+"""
