@@ -11,6 +11,7 @@ from sklearn.linear_model import LinearRegression
 
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
+
 """
 class YouTubeChannel:
     def __init__(self, csv):
@@ -24,11 +25,14 @@ class YouTubeChannel:
     
     def load
 """
-class YouTubeChannelManager:
+
+class YouTubeChannelDataManager:
+    """ Manages data from raw input """
     def __init__(self):
-        self.YouTubeChannels = []
+        self.yt_channel_data = []
         
-    def ProcessYouTubeChannels(self, csv = 'top_200_youtubers.csv', groupby_filter = 'Country', cols = ['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']):
+    def process_yt_channel_data(self, csv = 'top_200_youtubers.csv', groupby_filter = 'Country', cols = ['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']):
+        """ Prepares views data by country """
         # Read the CSV file into a DataFrame
         df = pd.read_csv(csv)
         
