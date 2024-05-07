@@ -14,9 +14,10 @@ from service.models import YouTubeChannelDataManager
 class TestYouTubeChannelDataManager(unittest.TestCase):
     """ Test if it manages data from raw input """
     def test_process_yt_channel_data(self):
-        """ Test if it prepares views data by country """
-        data_manager = YouTubeChannelDataManager()
-        data_manager.process_yt_channel_data()
+        """ Test if it prepares views data by country with 'top_200_youtubers.csv' file """
+        CSV = 'top_200_youtubers.csv'
+        data_manager = YouTubeChannelDataManager(CSV)
+        data_manager.process_yt_channel_data(CSV)
 
 #class TestAverageViewsLinearRegressionDataPreparation(unittest.TestCase):
 #    """Test cases for linear regression data preparation"""

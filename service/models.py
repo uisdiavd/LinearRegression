@@ -28,25 +28,39 @@ class YouTubeChannel:
 
 class YouTubeChannelDataManager:
     """ Manages data from raw input """
-    def __init__(self):
+    def __init__(self, file):
         self.yt_channel_data = []
+        self.file = file
         
-    def process_yt_channel_data(self, csv = 'top_200_youtubers.csv', groupby_filter = 'Country', cols = ['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']):
-        """ Prepares views data by country """
+    def process_yt_channel_data(self, CSV):
+        """ Returns length of processed data """
         # Read the CSV file into a DataFrame
-        df = pd.read_csv(csv)
+        df = pd.read_csv(CSV)
+
+        # Set columns of training data
+        cols = ['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']
+            
+        # Set groupby_filter
+        groupby_filter = 'Country'
         
         # Prepare data for regression
         views = df.groupby(groupby_filter)[cols].mean().fillna(0)
         dfr = pd.DataFrame(views).reset_index()
         
+        print('Number of countries: ', len(dfr[groupby_filter]))
+        return len(dfr[groupby_filter])
+    
+    def convert_to_dataframe(self):
         for r in range(len(dfr[groupby_filter])):
             # Initialize training and target data for iteration to find null or zero values
             # Define training data as a list to enable iteration per country for null or zero values
             data = dfr[cols].iloc[r].values.reshape(-1, 1)
-            print(data)
+            # Test print
+            #print(data)
+        
+        
 """
-class AverageViewsLinearRegression(df):
+class LinearRegression(df):
 
     # Test print
     #print('dfr: \n', dfr.head())
