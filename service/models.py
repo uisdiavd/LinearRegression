@@ -77,32 +77,33 @@ class LinearRegressionDataPreparation:
         
         # Iterate over data to clean null or zero values in training data and corresponding target data
         for l,d in enumerate(data):
-    #         # Test print for troubleshooting, displays index of value being evaluated
-    #        print('l value: ', l)
+            ## Test print for troubleshooting, displays index of value being evaluated
+            #print('l value: ', l)
     
             # If training data point is 0, then clean corresponding target value
             if data[l] == 0:
-    #            # Test print confirms that the if statement is running correctly
-    #            print('Zero data row: ', r, '\n',  'Zero data index: ', l)
-    #            print('Adjustment: ', adjustment)
+                ## Test print confirms that the if statement is running correctly
+                #print('Zero data row: ', r, '\n',  'Zero data index: ', l)
+                #print('Adjustment: ', adjustment)
 
                 # Targeted index accounts for changing length of target list after removing a value
                 t = l - adjustment
-    #            print('Target index: ', t)
+                ##Test print target index for troubleshooting
+                #print('Target index: ', t)
 
                 # Value to be removed from the target values list
                 delvalue = targets[t]
                 targets.remove(delvalue)
 
-    #            # Test print with latest target value corresponding to training data zero value removed
-    #            print('Targets after zero removed: ', targets)
+                ## Test print with latest target value corresponding to training data zero value removed
+                #print('Targets after zero removed: ', targets)
 
                 # Increase adjustment value to account for length of target list after removing a value
                 adjustment += 1
 
-    #        # Test print data row number with final set of target values
-    #        print('Row: ', r)
-    #        print('Target values: ', targets)
+            ## Test print data row number with final set of target values
+            #print('Row: ', r)
+            #print('Target values: ', targets)
             return targets
 
     def convert_to_dataframe(self, data):
