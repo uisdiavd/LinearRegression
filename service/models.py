@@ -32,7 +32,7 @@ class YouTubeChannelDataManager:
         self.yt_channel_data = []
         
     def process_yt_channel_data(self, CSV):
-        """ Returns processed data """
+        """ Returns processed data as DataFrame"""
         # Read the CSV file into a DataFrame
         df = pd.read_csv(CSV)
 
@@ -46,7 +46,6 @@ class YouTubeChannelDataManager:
         views = df.groupby(groupby_filter)[cols].mean().fillna(0)
         dfr = pd.DataFrame(views).reset_index()
         
-        print('Number of countries: ', len(dfr[groupby_filter]))
         return dfr
     
     def data_range(self, file):

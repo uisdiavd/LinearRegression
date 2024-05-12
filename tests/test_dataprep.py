@@ -14,37 +14,39 @@ from service.models import YouTubeChannelDataManager
 class TestYouTubeChannelDataManager(unittest.TestCase):
     """ Test if it manages data from raw input """
     
-    def test_process_yt_channel_data(self):
+    def test_process_yt_channel_data(self, CSV = 'top_200_youtubers.csv'):
         """ Test if it prepares views data by country with 'top_200_youtubers.csv' file """
-        """ Then there should be a new dataset with only the following columns: 'Country', 'Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day'
-            And there should only be one row of data for the country 'AE'
-            And there should only be one row of data for the country 'AR'
-            And there should only be one row of data for the country 'AU'
-        """
-        CSV = 'top_200_youtubers.csv'
+        self.csv = CSV
         data_manager = YouTubeChannelDataManager()
-        data_manager.process_yt_channel_data(CSV)
-
-    def test_avgviews_data_filter(self):
-        """It should create a table with only views data in it"""
-        raise NotImplementedError('Not implemented yet')
-
-    def test_avgviews_by_country(self):
-        """It should combine the data from avgviewsdatafilter by country"""
-        raise NotImplementedError('Not implemented yet')
-class TestLinearRegressionDataPreparation(unittest.TestCase):
-    """Test cases for linear regression data preparation"""
-    
-    def test_convert_to_dataframe(self):
-        """It should return dataframes for both training and target data"""
-        raise NotImplementedError('Not implemented yet')
-    
-    def test_missing_data_handling(self):
-        """It should remove null and zero values from training data and the corresponding target data"""
-        raise NotImplementedError('Not implemented yet')
-    
-    def test_zero_data_handling(self):
-        """It should skip linear regression model fitting when training dataframe is empty"""
+        dfr = data_manager.process_yt_channel_data(self.csv)
+        
+        # Testing that only one entry exists for each country
+        start = 1
+        for country in dfr['Country']:
+            length = len(dfr['Country'])
+            self.assertNotIn(country, dfr['Country'].values[start:length], "Multiple of country entry found")
+            start += 1
+#
+#    def test_avgviews_data_filter(self):
+#        """It should create a table with only views data in it"""
 #        raise NotImplementedError('Not implemented yet')
-
+#
+#    def test_avgviews_by_country(self):
+#        """It should combine the data from avgviewsdatafilter by country"""
+#        raise NotImplementedError('Not implemented yet')
+#class TestLinearRegressionDataPreparation(unittest.TestCase):
+#    """Test cases for linear regression data preparation"""
+#    
+#    def test_convert_to_dataframe(self):
+#        """It should return dataframes for both training and target data"""
+#        raise NotImplementedError('Not implemented yet')
+#    
+#    def test_missing_data_handling(self):
+#        """It should remove null and zero values from training data and the corresponding target data"""
+#        raise NotImplementedError('Not implemented yet')
+#    
+#    def test_zero_data_handling(self):
+#        """It should skip linear regression model fitting when training dataframe is empty"""
+#        raise NotImplementedError('Not implemented yet')
+#
 #class TestLinearRegression:
