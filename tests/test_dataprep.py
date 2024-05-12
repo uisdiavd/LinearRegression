@@ -35,7 +35,7 @@ class TestYouTubeChannelDataManager(unittest.TestCase):
         start = 1
         for country in dfr['Country']:
             length = len(dfr['Country'])
-            logging.info("Looking for duplicates of country %s", country)
+            app.logger.info("Looking for duplicates of country %s", country)
             self.assertNotIn(country, dfr['Country'].values[start:length], "Multiple of country entry found")
             start += 1
 #
