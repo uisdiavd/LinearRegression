@@ -10,9 +10,20 @@ Test cases should be run with
 import unittest
 import logging
 from service.models import YouTubeChannelDataManager
+from service import app
 
 class TestYouTubeChannelDataManager(unittest.TestCase):
     """ Test if it manages data from raw input """
+    
+    @classmethod
+    def setUpClass(cls):
+        """This runs once before the entire test suite"""
+        app.config["TESTING"] = True
+        app.config["DEBUG"] = False
+        app.logger.setLevel(logging.INFO)
+    #
+    # Test cases
+    #
     
     def test_process_yt_channel_data(self, CSV = 'top_200_youtubers.csv'):
         """ Test if only one entry exists for each country when preparing the 'top_200_youtubers.csv' file """
