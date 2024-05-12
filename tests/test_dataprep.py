@@ -15,7 +15,7 @@ class TestYouTubeChannelDataManager(unittest.TestCase):
     """ Test if it manages data from raw input """
     
     def test_process_yt_channel_data(self, CSV = 'top_200_youtubers.csv'):
-        """ Test if it prepares views data by country with 'top_200_youtubers.csv' file """
+        """ Test if only one entry exists for each country when preparing the 'top_200_youtubers.csv' file """
         self.csv = CSV
         data_manager = YouTubeChannelDataManager()
         dfr = data_manager.process_yt_channel_data(self.csv)
@@ -24,6 +24,7 @@ class TestYouTubeChannelDataManager(unittest.TestCase):
         start = 1
         for country in dfr['Country']:
             length = len(dfr['Country'])
+            logging.info("Looking for duplicates of country %s", country)
             self.assertNotIn(country, dfr['Country'].values[start:length], "Multiple of country entry found")
             start += 1
 #
