@@ -60,20 +60,25 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
         self.file = file
         data_manager = YouTubeChannelDataManager()
         self.dfr = data_manager.process_yt_channel_data(file)
+        
+    # # # # # # # #
+    # TEST CASES  #
+    # # # # # # # #
 
     def test_null_to_zero(self):
         """ Test that null values are converted to zero from the managed data set """
-        dfr = self.dfr
         file = self.file
         data_range = range(YouTubeChannelDataManager().data_length(file))
              
         for r in data_range:
             data = LinearRegressionDataPreparation().extract_training_data_for_row(file, r)
             for l,d in enumerate(data):
-                ## Test print for troubleshooting, displays index of value being evaluated
+                ## Troubleshooting print: index of value being evaluated
                 #print('l value: ', l)
 
-                for entry in dfr:
+                for entry in data:
+                    ## Troubleshooting print: entry value being evaluated
+                    #print(entry)
                     self.assertIsNotNone(entry)
     
 #    def test_missing_data_handling(self):

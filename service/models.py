@@ -26,10 +26,10 @@ class YouTubeChannel:
     def load
 """
 
-class YouTubeChannelDataManager:
+class YouTubeChannelDataManager(object):
     """ Manages data from raw input """
-    def __init__(self):
-        self.yt_channel_data = []
+#    def __init__(self,csv):
+#        self.csv = csv
         
     def process_yt_channel_data(self, csv):
         """ Returns processed data as DataFrame"""
