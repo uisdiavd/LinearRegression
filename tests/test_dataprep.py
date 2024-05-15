@@ -20,7 +20,7 @@ class TestYouTubeChannelDataManager(unittest.TestCase):
         """This runs once before the entire test suite"""
         app.config["TESTING"] = True
         app.config["DEBUG"] = False
-        app.logger.setLevel(logging.INFO)
+        app.logger.setLevel(logging.ERROR)
         
     def setUp(self):
         # Test data setup
@@ -44,12 +44,27 @@ class TestYouTubeChannelDataManager(unittest.TestCase):
             self.assertNotIn(country, dfr['Country'].values[start:length], "Multiple of country entry found")
             start += 1
 
-#class TestLinearRegressionDataPreparation(unittest.TestCase):
-#    """Test cases for linear regression data preparation"""
-#    
-#    def test_convert_to_dataframe(self):
-#        """It should return dataframes for both training and target data"""
-#        raise NotImplementedError('Not implemented yet')
+class TestLinearRegressionDataPreparation(unittest.TestCase):
+    """Test cases for linear regression data preparation"""
+    
+    @classmethod
+    def setUpClass(cls):
+        """This runs once before the entire test suite"""
+        app.config["TESTING"] = True
+        app.config["DEBUG"] = False
+        app.logger.setLevel(logging.INFO)
+        
+    def setUp(self):
+        # Test data setup
+        csv = 'top_200_youtubers.csv'
+        data_manager = YouTubeChannelDataManager()
+        self.dfr = data_manager.process_yt_channel_data(csv)
+    
+    def test_convert_to_dataframe(self):
+        """It should return dataframes for both training and target data"""
+        dfr = self.dfr
+        check = type(dfr)
+        self.assertEqual(f"{check}", "<class 'pandas.core.frame.DataFrame'>", "Object 'dfr' not converted to a DataFrame")
     
 #    def test_missing_data_handling(self):
 #        """It should remove null and zero values from training data and the corresponding target data"""
