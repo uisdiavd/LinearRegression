@@ -31,10 +31,10 @@ class YouTubeChannelDataManager:
     def __init__(self):
         self.yt_channel_data = []
         
-    def process_yt_channel_data(self, CSV):
+    def process_yt_channel_data(self, csv):
         """ Returns processed data as DataFrame"""
-        # Read the CSV file into a DataFrame
-        df = pd.read_csv(CSV)
+        # Read the csv file into a DataFrame
+        df = pd.read_csv(csv)
 
         # Set columns of training data
         cols = ['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']
@@ -48,20 +48,28 @@ class YouTubeChannelDataManager:
         
         return dfr
     
-    def data_range(self, file):
+    def data_length(self, file):
         """ Returns length of processed data """
         dfr = YouTubeChannelDataManager().process_yt_channel_data(file)
+        
+        # Set groupby_filter
+        groupby_filter = 'Country'
+        
         return len(dfr[groupby_filter])
-#
-#class LinearRegressionDataPreparation:
-#    """ Prepares data for linear regression"""
-#    def extract_training_data_for_row(self, row):
-#        # Define training data as a list to enable iteration per country for null or zero values
-#        dfr = YouTubeChannelDataManager().process_yt_channel_data(file)
-#        data = dfr[cols].iloc[row].values.reshape(-1, 1)
-#        ## Test print
-#        #print(data)
-#        return data
+
+class LinearRegressionDataPreparation:
+    """ Prepares data for linear regression"""
+    
+    def extract_training_data_for_row(self, file, row):
+        # Define training data as a list to enable iteration per country for null or zero values
+        
+        cols = ['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']
+        dfr = YouTubeChannelDataManager().process_yt_channel_data(file)
+        data = dfr[cols].iloc[row].values.reshape(-1, 1)
+        
+        ## Test print
+        #print(data)
+        return data
 #    
 #    def match_target_to_training_dimension(self, file, row):
 #        """ Returns array of target values matched with the non-zero training data """
@@ -113,9 +121,9 @@ class YouTubeChannelDataManager:
 #    def linear_regression_model_fit(self, file):
 #        # Initialize required data
 #        model = LinearRegression()
-#        data_length = YouTubeChannelDataManager().data_range(file)
+#        data_range = range(YouTubeChannelDataManager().data_length(file))
 #             
-#        for r in data_length:
+#        for r in data_range:
 #            targets = LinearRegressionDataPreparation().match_target_to_training_dimension(file, r)
 #            y = LinearRegressionDataPreparation.convert_to_dataframe(targets)
 #

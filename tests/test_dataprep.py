@@ -9,7 +9,7 @@ Test cases should be run with
 
 import unittest
 import logging
-from service.models import YouTubeChannelDataManager
+from service.models import YouTubeChannelDataManager, LinearRegressionDataPreparation
 from service import app
 
 class TestYouTubeChannelDataManager(unittest.TestCase):
@@ -24,13 +24,13 @@ class TestYouTubeChannelDataManager(unittest.TestCase):
         
     def setUp(self):
         # Test data setup
-        csv = 'top_200_youtubers.csv'
+        file = 'top_200_youtubers.csv'
         data_manager = YouTubeChannelDataManager()
-        self.dfr = data_manager.process_yt_channel_data(csv)
+        self.dfr = data_manager.process_yt_channel_data(file)
         
-    #
-    # Test cases
-    #
+    # # # # # # # #
+    # TEST CASES  #
+    # # # # # # # #
     
     def test_process_yt_channel_data(self):
         """ Test if only one entry exists for each country when preparing the 'top_200_youtubers.csv' file """
@@ -56,19 +56,48 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
         
     def setUp(self):
         # Test data setup
-        csv = 'top_200_youtubers.csv'
+        file = 'top_200_youtubers.csv'
+        self.file = file
         data_manager = YouTubeChannelDataManager()
-        self.dfr = data_manager.process_yt_channel_data(csv)
-    
-    def test_convert_to_dataframe(self):
-        """It should return dataframes for both training and target data"""
+        self.dfr = data_manager.process_yt_channel_data(file)
+
+    def test_null_to_zero(self):
+        """ Test that null values are converted to zero from the managed data set """
         dfr = self.dfr
-        check = type(dfr)
-        self.assertEqual(f"{check}", "<class 'pandas.core.frame.DataFrame'>", "Object 'dfr' not converted to a DataFrame")
+        file = self.file
+        data_range = range(YouTubeChannelDataManager().data_length(file))
+             
+        for r in data_range:
+            data = LinearRegressionDataPreparation().extract_training_data_for_row(file, r)
+            for l,d in enumerate(data):
+                ## Test print for troubleshooting, displays index of value being evaluated
+                #print('l value: ', l)
+
+                for entry in dfr:
+                    self.assertIsNotNone(entry)
     
 #    def test_missing_data_handling(self):
 #        """It should remove null and zero values from training data and the corresponding target data"""
-#        raise NotImplementedError('Not implemented yet')
+#        # Convert null to zero
+#        raise NotImplementedError('Not completely implemented yet')
+    
+#    def test_convert_to_dataframe(self):
+#        """Test that the model should return dataframes for both training and target data"""
+#        
+#        data_length = YouTubeChannelDataManager().data_range(file)
+#             
+#        for r in data_length:
+#            convertdata = LinearRegressionDataPreparation().extract_training_data_for_row(r)
+#            data = LinearRegressionDataPreparation().convert_to_dataframe(convertdata)
+#            checkdata = type(data)
+#            self.assertEqual(f"{checkdata}", "<class 'pandas.core.frame.DataFrame'>", "Object 'data' not converted to a DataFrame")
+#
+#            converttargets = LinearRegressionDataPreparation().match_target_to_training_dimension(self, file, r)
+#            targets = LinearRegressionDataPreparation().convert_to_dataframe(converttargets)
+#            checktargets = type(targets)
+#            self.assertEqual(f"{checktargets}", "<class 'pandas.core.frame.DataFrame'>", "Object 'targets' not converted to a DataFrame")
+    
+
 #    
 #    def test_zero_data_handling(self):
 #        """It should skip linear regression model fitting when training dataframe is empty"""
