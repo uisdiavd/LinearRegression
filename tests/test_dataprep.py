@@ -60,6 +60,7 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
         self.file = file
         data_manager = YouTubeChannelDataManager()
         self.dfr = data_manager.process_yt_channel_data(file)
+        self.lrprep = LinearRegressionDataPreparation()
         
     # # # # # # # #
     # TEST CASES  #
@@ -69,9 +70,10 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
         """ Test that null values are converted to zero from the managed data set """
         file = self.file
         data_range = range(YouTubeChannelDataManager().data_length(file))
-             
+        lrprep = self.lrprep
+        
         for r in data_range:
-            data = LinearRegressionDataPreparation().extract_training_data_for_row(file, r)
+            data = lrprep.extract_training_data_for_row(file, r)
             for l,d in enumerate(data):
                 ## Troubleshooting print: index of value being evaluated
                 #print('l value: ', l)
@@ -81,10 +83,19 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
                     #print(entry)
                     self.assertIsNotNone(entry)
     
-#    def test_missing_data_handling(self):
-#        """It should remove null and zero values from training data and the corresponding target data"""
-#        # Convert null to zero
-#        raise NotImplementedError('Not completely implemented yet')
+    def test_missing_data_handling(self):
+        """It should remove null and zero values from training data and the corresponding target data"""
+        # Initialize variables
+        file = self.file
+        data_range = range(YouTubeChannelDataManager().data_length(file))
+        lrprep = self.lrprep
+        
+        for r in data_range:
+            checkdata = lrprep.clean_target_data(file, r)
+            for entry in checkdata:
+                self.assertNotEqual(entry, 0, f'A zero value is still present in the training data for row {r}')
+        
+        raise NotImplementedError('Target data still needs to be tested for removal of corresponding missing data')
     
 #    def test_convert_to_dataframe(self):
 #        """Test that the model should return dataframes for both training and target data"""
