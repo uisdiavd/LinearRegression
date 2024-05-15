@@ -21,16 +21,21 @@ class TestYouTubeChannelDataManager(unittest.TestCase):
         app.config["TESTING"] = True
         app.config["DEBUG"] = False
         app.logger.setLevel(logging.INFO)
+        
+    def setUp(self):
+        # Test data setup
+        csv = 'top_200_youtubers.csv'
+        data_manager = YouTubeChannelDataManager()
+        self.dfr = data_manager.process_yt_channel_data(csv)
+        
     #
     # Test cases
     #
     
-    def test_process_yt_channel_data(self, CSV = 'top_200_youtubers.csv'):
+    def test_process_yt_channel_data(self):
         """ Test if only one entry exists for each country when preparing the 'top_200_youtubers.csv' file """
-        self.csv = CSV
-        data_manager = YouTubeChannelDataManager()
-        dfr = data_manager.process_yt_channel_data(self.csv)
-        
+        dfr = self.dfr
+                 
         # Testing that only one entry exists for each country
         start = 1
         for country in dfr['Country']:
@@ -38,21 +43,14 @@ class TestYouTubeChannelDataManager(unittest.TestCase):
             app.logger.info("Looking for duplicates of country %s", country)
             self.assertNotIn(country, dfr['Country'].values[start:length], "Multiple of country entry found")
             start += 1
-#
-#    def test_avgviews_data_filter(self):
-#        """It should create a table with only views data in it"""
-#        raise NotImplementedError('Not implemented yet')
-#
-#    def test_avgviews_by_country(self):
-#        """It should combine the data from avgviewsdatafilter by country"""
-#        raise NotImplementedError('Not implemented yet')
+
 #class TestLinearRegressionDataPreparation(unittest.TestCase):
 #    """Test cases for linear regression data preparation"""
 #    
 #    def test_convert_to_dataframe(self):
 #        """It should return dataframes for both training and target data"""
 #        raise NotImplementedError('Not implemented yet')
-#    
+    
 #    def test_missing_data_handling(self):
 #        """It should remove null and zero values from training data and the corresponding target data"""
 #        raise NotImplementedError('Not implemented yet')
