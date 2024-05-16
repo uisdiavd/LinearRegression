@@ -73,9 +73,10 @@ class LinearRegressionDataPreparation:
         return data
     
     def clean_target_data(self, file, row):
-        """ Returns array of target values matched with the non-zero training data """
+        """ Returns array of target values matched with the non-zero training data and a list of removed indexes """
         # Pass in parameters from prep functions
         data = LinearRegressionDataPreparation().extract_training_data_for_row(file, row)
+        removed_data_indexes = []
         
         # Define target data as a list for use with removing corresponding missing values from training data
         targets = [1, 3, 7, 14, 30, 60]
@@ -87,11 +88,11 @@ class LinearRegressionDataPreparation:
         for l,d in enumerate(data):
             ## Test print for troubleshooting, displays index of value being evaluated
             #print('l value: ', l)
-    
+            
             # If training data point is 0, then clean corresponding target value
             if data[l] == 0:
                 ## Test print confirms that the if statement is running correctly
-                #print('Zero data row: ', r, '\n',  'Zero data index: ', l)
+                #print('Zero data row: ', row, '\n',  'Zero data index: ', l)
                 #print('Adjustment: ', adjustment)
 
                 # Targeted index accounts for changing length of target list after removing a value
@@ -102,6 +103,10 @@ class LinearRegressionDataPreparation:
                 # Value to be removed from the target values list
                 delvalue = targets[t]
                 targets.remove(delvalue)
+                
+                # Add index to removed_data_indexes dict
+                removed_data_indexes.append(tuple((row, l)))
+                #print('removed_data_indexes: ', removed_data_indexes)
 
                 ## Test print with latest target value corresponding to training data zero value removed
                 #print('Targets after zero removed: ', targets)
@@ -112,11 +117,29 @@ class LinearRegressionDataPreparation:
             ## Test print data row number with final set of target values
             #print('Row: ', r)
             #print('Target values: ', targets)
-            return targets
-#
-#    def convert_to_dataframe(self, data):
-#        return pd.DataFrame(data)
-#
+            return targets, removed_data_indexes
+
+    def convert_to_dataframe(self, data):
+        """ Converts array to dataframe """
+        return pd.DataFrame(data)
+
+    def clean_training_data(self, file, row):
+        """ Returns training data after removing zero values. Use after cleaning target data """
+        
+        # Initialize data range
+#        data_range = range(YouTubeChannelDataManager().data_length(file))
+             
+#        for r in data_range:
+        data = LinearRegressionDataPreparation().extract_training_data_for_row(file, row)
+        
+        # Convert training data to dataframe to enable removal of missing values
+        X = LinearRegressionDataPreparation().convert_to_dataframe(data)
+        
+        # Clean zero values from training data dataframe
+        X = X[X[0] != 0].reset_index()
+            
+        return X
+        
 #class LinearRegression:
 #    """ Forms a linear regression fit model """
 #    def linear_regression_model_fit(self, file):
@@ -128,11 +151,7 @@ class LinearRegressionDataPreparation:
 #            targets = LinearRegressionDataPreparation().clean_target_data(file, r)
 #            y = LinearRegressionDataPreparation.convert_to_dataframe(targets)
 #
-#            data = LinearRegressionDataPreparation().extract_training_data_for_row(r)
-#            # Convert training data to dataframe to enable removal of missing values
-#            X = pd.DataFrame(data)
-#            # Clean zero values from training data dataframe
-#            X = X[X[0] != 0].reset_index()
+#            X = LinearRegressionDataPreparation().clean_training_data()
 #            
 #            # Convert column names to strings 
 #            X.columns = X.columns.astype(str)

@@ -82,37 +82,57 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
                     ## Troubleshooting print: entry value being evaluated
                     #print(entry)
                     self.assertIsNotNone(entry)
+
+    def test_missing_target_data_handling(self):
+        """ It should remove target data corresponding to null and zero values from target data """
+        
+        # Initialize variables
+        file = self.file
+        data_length = YouTubeChannelDataManager().data_length(file)
+        data_range = range(data_length)
+        lrprep = self.lrprep
+        
+        # Check cleaned target data
+        for r in data_range:
+            checkdata, removed_data_indexes = lrprep.clean_target_data(file, r)
+            data = LinearRegressionDataPreparation().extract_training_data_for_row(file, r)
+            ## Test prints
+            #print('row: ', r)
+            #print('checkdata: ', checkdata)
+            #print('data: ', data)
+            #print('rdi: ', removed_data_indexes)
+            self.assertEqual(len(checkdata), len(data) - len(removed_data_indexes))
     
-    def test_missing_data_handling(self):
-        """It should remove null and zero values from training data and the corresponding target data"""
+    def test_convert_to_dataframe(self):
+        """Test that the model should return dataframes for both training and target data"""
+        # Initialize variables
+        file = self.file
+        data_range = range(YouTubeChannelDataManager().data_length(file))
+             
+        for r in data_range:
+            convertdata = LinearRegressionDataPreparation().clean_training_data(file, r)
+            data = LinearRegressionDataPreparation().convert_to_dataframe(convertdata)
+            checkdata = type(data)
+            self.assertEqual(f"{checkdata}", "<class 'pandas.core.frame.DataFrame'>", "Object 'data' not converted to a DataFrame")
+
+            converttargets = LinearRegressionDataPreparation().clean_target_data(file, r)
+            targets = LinearRegressionDataPreparation().convert_to_dataframe(converttargets)
+            checktargets = type(targets)
+            self.assertEqual(f"{checktargets}", "<class 'pandas.core.frame.DataFrame'>", "Object 'targets' not converted to a DataFrame")
+    
+    def test_missing_training_data_handling(self):
+        """ It should remove null and zero values from training data """
         # Initialize variables
         file = self.file
         data_range = range(YouTubeChannelDataManager().data_length(file))
         lrprep = self.lrprep
         
+        # Check cleaned training data
         for r in data_range:
-            checkdata = lrprep.clean_target_data(file, r)
-            for entry in checkdata:
-                self.assertNotEqual(entry, 0, f'A zero value is still present in the training data for row {r}')
+            checkdata = lrprep.clean_training_data(file, r).iloc[r].values.reshape(-1, 1)
+            self.assertNotIn(0, checkdata, f'A zero value is still detected in the training data for row {r}')
         
-        raise NotImplementedError('Target data still needs to be tested for removal of corresponding missing data')
-    
-#    def test_convert_to_dataframe(self):
-#        """Test that the model should return dataframes for both training and target data"""
-#        
-#        data_length = YouTubeChannelDataManager().data_range(file)
-#             
-#        for r in data_length:
-#            convertdata = LinearRegressionDataPreparation().extract_training_data_for_row(r)
-#            data = LinearRegressionDataPreparation().convert_to_dataframe(convertdata)
-#            checkdata = type(data)
-#            self.assertEqual(f"{checkdata}", "<class 'pandas.core.frame.DataFrame'>", "Object 'data' not converted to a DataFrame")
-#
-#            converttargets = LinearRegressionDataPreparation().match_target_to_training_dimension(self, file, r)
-#            targets = LinearRegressionDataPreparation().convert_to_dataframe(converttargets)
-#            checktargets = type(targets)
-#            self.assertEqual(f"{checktargets}", "<class 'pandas.core.frame.DataFrame'>", "Object 'targets' not converted to a DataFrame")
-    
+        raise NotImplementedError('Need to implement check of values of the dataframe')
 
 #    
 #    def test_zero_data_handling(self):
