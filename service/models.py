@@ -7,6 +7,7 @@ Next, add a column that shows the expected views for the next 90 days based on t
 
 import pandas as pd
 import numpy as np
+import warnings
 from sklearn.linear_model import LinearRegression
 
 pd.set_option('display.max_rows', None)
@@ -142,8 +143,27 @@ class LinearRegressionDataPreparation:
             
         return X
         
-#class LinearRegression:
-#    """ Forms a linear regression fit model """
+class FitData:
+    """ Forms a linear regression fit model """
+
+    def checkskip(self, file):
+        """ Should continue if there is no training data to create a model from """
+        
+        data_range = range(YouTubeChannelDataManager().data_length(file))
+        for r in data_range:
+            checkdata = LinearRegressionDataPreparation().clean_training_data(file, r)[0].values
+            
+            #Troubleshooting test prints
+            #print('checkdata type: ', type(checkdata))
+            print('checkdata: ', checkdata)
+            
+            if len(checkdata) == 0:
+                warnings.warn(f'Empty training data set skipped for row {r}', Warning)
+                continue
+            else:
+                print(f'The model will continue for row {r}')
+                #FitData().linear_regression_model_fit(file)
+
 #    def linear_regression_model_fit(self, file):
 #        # Initialize required data
 #        model = LinearRegression()

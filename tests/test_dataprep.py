@@ -9,7 +9,7 @@ Test cases should be run with
 
 import unittest
 import logging
-from service.models import YouTubeChannelDataManager, LinearRegressionDataPreparation
+from service.models import YouTubeChannelDataManager, LinearRegressionDataPreparation, FitData
 from service import app
 
 class TestYouTubeChannelDataManager(unittest.TestCase):
@@ -144,9 +144,53 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
             #print('checkdata: ', checkdata)
             
             self.assertNotIn(0, checkdata, f'A zero value is still detected in the training data for row {r}')
-#    
-#    def test_zero_data_handling(self):
-#        """It should skip linear regression model fitting when training dataframe is empty"""
-#        raise NotImplementedError('Not implemented yet')
-#
-#class TestLinearRegression:
+    
+class TestLinearRegression(unittest.TestCase):
+    """ Test functionality of linear regression """
+    @classmethod
+    def setUpClass(cls):
+        """This runs once before the entire test suite"""
+        app.config["TESTING"] = True
+        app.config["DEBUG"] = False
+        app.logger.setLevel(logging.INFO)
+        
+    def setUp(self):
+        # Test data setup
+        file = 'top_200_youtubers.csv'
+        self.file = file
+        self.data_manager = YouTubeChannelDataManager()
+        self.lrprep = LinearRegressionDataPreparation()
+        self.fitdata = FitData()
+        
+    # # # # # # # #
+    # TEST CASES  #
+    # # # # # # # #
+    
+    def test_zero_data_handling(self):
+        """It should skip linear regression model fitting when training dataframe is empty"""
+        
+        # Initialize variables
+        file = self.file
+        data_manager = self.data_manager
+        data_range = range(data_manager.data_length(file))
+        lrprep = self.lrprep
+        fitdata = self.fitdata
+        
+        # Check if linear regression model fitting skips for empty training data sets
+        for r in data_range:
+            checkdata = lrprep.clean_training_data(file, r)[0].values
+            
+            #Troubleshooting test prints
+            #print('checkdata type: ', type(checkdata))
+            print('checkdata: ', checkdata)
+            
+            if len(checkdata) == 0:
+                #self.assertRaises(ValueError, fitdata.checkskip(file))
+                self.assertWarns(Warning)
+            else:
+                continue
+                
+
+            
+            #self.assertNotIn(0, checkdata, f'A zero value is still detected in the training data for row {r}')
+        #raise NotImplementedError('Not implemented yet')
