@@ -9,7 +9,8 @@ Test cases should be run with
 
 import unittest
 import logging
-from service.models import YouTubeChannelDataManager, LinearRegressionDataPreparation
+import warnings
+from service.models import YouTubeChannelDataManager, LinearRegressionDataPreparation, FitData
 from service import app
 
 class TestYouTubeChannelDataManager(unittest.TestCase):
@@ -144,9 +145,55 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
             #print('checkdata: ', checkdata)
             
             self.assertNotIn(0, checkdata, f'A zero value is still detected in the training data for row {r}')
-#    
-#    def test_zero_data_handling(self):
-#        """It should skip linear regression model fitting when training dataframe is empty"""
-#        raise NotImplementedError('Not implemented yet')
-#
-#class TestLinearRegression:
+    
+class TestLinearRegression(unittest.TestCase):
+    """ Test functionality of linear regression """
+    @classmethod
+    def setUpClass(cls):
+        """This runs once before the entire test suite"""
+        app.config["TESTING"] = True
+        app.config["DEBUG"] = False
+        app.logger.setLevel(logging.INFO)
+        
+    def setUp(self):
+        # Test data setup
+        file = 'top_200_youtubers.csv'
+        self.file = file
+        self.data_manager = YouTubeChannelDataManager()
+        self.lrprep = LinearRegressionDataPreparation()
+        self.fitdata = FitData()
+        
+    # # # # # # # #
+    # TEST CASES  #
+    # # # # # # # #
+    
+    def test_insufficient_data_handling(self):
+        """ It should skip linear regression model fitting when training dataframe is empty """
+        
+        # Initialize variables
+        file = self.file
+        data_manager = self.data_manager
+        data_range = range(data_manager.data_length(file))
+        lrprep = self.lrprep
+        
+        # Check if linear regression model fitting is skipped for insufficient training data rows
+        for r in data_range:
+            checkdata = lrprep.clean_training_data(file, r)[0].values
+            #checkreturn = FitData().insufficient_data_handling(file, r)
+            #Troubleshooting test prints
+            #print('checkdata type: ', type(checkdata))
+            #print('checkdata: ', checkdata)
+            
+            
+            if len(checkdata) <= 1:
+                ## Print to check that empty rows are skipped
+                #print('checkdata: ', checkdata)
+                #print(f"Row {r} should be skipped for having insufficient training data")
+                #print(f'Checkdata for row {r} identified as <= 1')
+                with warnings.catch_warnings(record = True) as w:
+                    FitData().insufficient_data_handling(file, r)
+                    assert len(w) > 0
+            
+#    def test_linear_regression_model_fit(self):
+#        """ It should return a linear regression model fit for rows with at least two training data points """
+        
