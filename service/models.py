@@ -146,34 +146,31 @@ class LinearRegressionDataPreparation:
 class FitData:
     """ Forms a linear regression fit model """
 
-    def zero_data_handling(self, file):
+    def insufficient_data_handling(self, file, row):
         """ Should continue if there is no training data to create a model from """
-        
-        data_range = range(YouTubeChannelDataManager().data_length(file))
-        for r in data_range:
-            checkdata = LinearRegressionDataPreparation().clean_training_data(file, r)[0].values
+        checkdata = LinearRegressionDataPreparation().clean_training_data(file, row)[0].values
             
-            #Troubleshooting test prints
-            #print('checkdata type: ', type(checkdata))
-            print('checkdata: ', checkdata)
+        #Troubleshooting test prints
+        #print('checkdata type: ', type(checkdata))
+        print('checkdata: ', checkdata)
             
-            if len(checkdata) == 0:
-                warnings.warn(f'Empty training data set skipped for row {r}', Warning)
-                continue
-            else:
-                print(f'The model will continue for row {r}')
-                #FitData().linear_regression_model_fit(file)
+        if len(checkdata) == 0:
+            warnings.warn(f'Empty training data set skipped for row {row}', Warning)
+        else:
+            print(f'The model will continue for row {row}')
+            #return FitData().linear_regression_model_fit(file)
 
-#    def linear_regression_model_fit(self, file):
+#    def linear_regression_model_fit(self, file, row):
+#        """ Generates a linear regression model fit for a row """
+#        
 #        # Initialize required data
 #        model = LinearRegression()
 #        data_range = range(YouTubeChannelDataManager().data_length(file))
 #             
 #        for r in data_range:
 #            targets = LinearRegressionDataPreparation().clean_target_data(file, r)
-#            y = LinearRegressionDataPreparation.convert_to_dataframe(targets)
-#
-#            X = LinearRegressionDataPreparation().clean_training_data()
+#            y = LinearRegressionDataPreparation().convert_to_dataframe(targets)
+#            X = LinearRegressionDataPreparation().clean_training_data(file, r)
 #            
 #            # Convert column names to strings 
 #            X.columns = X.columns.astype(str)
@@ -183,5 +180,5 @@ class FitData:
 #            #print('X: ', type(X), X, '\n')
 #            #print('y: ', type(y), y)
 #
-#            ## Linear regression model fit
-#            #model.fit(X,y)
+#            # Linear regression model fit
+#            return model.fit(X,y)

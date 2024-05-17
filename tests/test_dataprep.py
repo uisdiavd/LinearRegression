@@ -166,27 +166,34 @@ class TestLinearRegression(unittest.TestCase):
     # TEST CASES  #
     # # # # # # # #
     
-    def test_zero_data_handling(self):
-        """It should skip linear regression model fitting when training dataframe is empty"""
+    def test_insufficient_data_handling(self):
+        """ It should skip linear regression model fitting when training dataframe is empty """
         
         # Initialize variables
         file = self.file
         data_manager = self.data_manager
         data_range = range(data_manager.data_length(file))
         lrprep = self.lrprep
-        fitdata = self.fitdata
         
-        # Check if linear regression model fitting skips for empty training data sets
+        # Check if linear regression model fitting is skipped for insufficient training data rows
         for r in data_range:
             checkdata = lrprep.clean_training_data(file, r)[0].values
-            
+            checkreturn = FitData().insufficient_data_handling(file, r)
             #Troubleshooting test prints
             #print('checkdata type: ', type(checkdata))
             #print('checkdata: ', checkdata)
             
-            if len(checkdata) == 0:
+            
+            if len(checkdata) <= 1:
                 ## Print to check that empty rows are skipped
-                #print(f"Row {r} has been skipped for having no training data")
-                self.assertWarns(Warning)
+                #print('checkdata: ', checkdata)
+                #print(f"Row {r} should be skipped for having insufficient training data")
+                with self.assertWarns(Warning):
+                    
             else:
                 continue
+        raise NotImplementedError('not finished implementing test yet')
+            
+#    def test_linear_regression_model_fit(self):
+#        """ It should return a linear regression model fit for rows with at least two training data points """
+        
