@@ -128,15 +128,12 @@ class LinearRegressionDataPreparation:
     def clean_training_data(self, file, row):
         """ Returns training data after removing zero values. Use after cleaning target data """
         #
+        # For use in for loop, pass in row iteration
         # Calls LinearRegressionDataPreparation().extract_training_data_for_row()
         # Passes to LinearRegressionDataPreparation().convert_to_dataframe()
         # Returns cleaned dataframe with training data
         #
         
-        ## Initialize data range
-        #data_range = range(YouTubeChannelDataManager().data_length(file))
-             
-        #for r in data_range:
         data = LinearRegressionDataPreparation().extract_training_data_for_row(file, row)
         
         # Convert training data to dataframe to enable removal of missing values
