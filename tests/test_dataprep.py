@@ -190,8 +190,3 @@ class TestLinearRegression(unittest.TestCase):
                 self.assertWarns(Warning)
             else:
                 continue
-                
-
-            
-            #self.assertNotIn(0, checkdata, f'A zero value is still detected in the training data for row {r}')
-        #raise NotImplementedError('Not implemented yet')
