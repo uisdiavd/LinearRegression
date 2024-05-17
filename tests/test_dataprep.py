@@ -96,11 +96,13 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
         for r in data_range:
             checkdata, removed_data_indexes = lrprep.clean_target_data(file, r)
             data = LinearRegressionDataPreparation().extract_training_data_for_row(file, r)
+            
             ## Test prints
             #print('row: ', r)
             #print('checkdata: ', checkdata)
             #print('data: ', data)
             #print('rdi: ', removed_data_indexes)
+            
             self.assertEqual(len(checkdata), len(data) - len(removed_data_indexes))
     
     def test_convert_to_dataframe(self):
@@ -122,6 +124,12 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
     
     def test_missing_training_data_handling(self):
         """ It should remove null and zero values from training data """
+        #
+        # Set up file, use to define data range, use in entry iteration for loop
+        # Entry iteration calls lrprep.clean_training_data() 
+        # and checks for existence of value 0
+        #
+        
         # Initialize variables
         file = self.file
         data_range = range(YouTubeChannelDataManager().data_length(file))
@@ -129,11 +137,10 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
         
         # Check cleaned training data
         for r in data_range:
-            checkdata = lrprep.clean_training_data(file, r).iloc[r].values.reshape(-1, 1)
+            checkdata = lrprep.clean_training_data(file, r)[0].values
+            #print('checkdata type: ', type(checkdata))
+            print('checkdata: ', checkdata)
             self.assertNotIn(0, checkdata, f'A zero value is still detected in the training data for row {r}')
-        
-        raise NotImplementedError('Need to implement check of values of the dataframe')
-
 #    
 #    def test_zero_data_handling(self):
 #        """It should skip linear regression model fitting when training dataframe is empty"""

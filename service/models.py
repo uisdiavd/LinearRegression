@@ -12,19 +12,19 @@ from sklearn.linear_model import LinearRegression
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 
-"""
-class YouTubeChannel:
-    def __init__(self, csv):
-        self.Country
-        self.Avg. 1 Day
-        self.Avg. 3 Day
-        self.Avg. 7 Day
-        self.Avg. 14 Day
-        self.Avg. 30 day
-        self.Avg. 60 day
-    
-    def load
-"""
+#
+#class YouTubeChannel:
+#    def __init__(self, csv):
+#        self.Country
+#        self.Avg. 1 Day
+#        self.Avg. 3 Day
+#        self.Avg. 7 Day
+#        self.Avg. 14 Day
+#        self.Avg. 30 day
+#        self.Avg. 60 day
+#    
+#    def load
+#
 
 class YouTubeChannelDataManager(object):
     """ Manages data from raw input """
@@ -62,7 +62,9 @@ class LinearRegressionDataPreparation:
     
     def extract_training_data_for_row(self, file, row):
         """ Extracts one row of data with a country and its view data """
-        # Define training data as a list to enable iteration per country for null or zero values
+        #
+        # Returns training data as a list to enable iteration per country for null or zero values
+        #
         
         cols = ['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']
         dfr = YouTubeChannelDataManager().process_yt_channel_data(file)
@@ -125,11 +127,16 @@ class LinearRegressionDataPreparation:
 
     def clean_training_data(self, file, row):
         """ Returns training data after removing zero values. Use after cleaning target data """
+        #
+        # Calls LinearRegressionDataPreparation().extract_training_data_for_row()
+        # Passes to LinearRegressionDataPreparation().convert_to_dataframe()
+        # Returns cleaned dataframe with training data
+        #
         
-        # Initialize data range
-#        data_range = range(YouTubeChannelDataManager().data_length(file))
+        ## Initialize data range
+        #data_range = range(YouTubeChannelDataManager().data_length(file))
              
-#        for r in data_range:
+        #for r in data_range:
         data = LinearRegressionDataPreparation().extract_training_data_for_row(file, row)
         
         # Convert training data to dataframe to enable removal of missing values
