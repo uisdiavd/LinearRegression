@@ -160,27 +160,27 @@ class FitData:
             print(f'The model will continue for row {row}')
             #temporary pass until continuing to regression fit is functional
             pass
-            #return FitData().linear_regression_model_fit(file)
+            return FitData().linear_regression_model_fit(file, row)
 
-#    def linear_regression_model_fit(self, file, row):
-#        """ Generates a linear regression model fit for a row """
-#        
-#        # Initialize required data
-#        model = LinearRegression()
-#        data_range = range(YouTubeChannelDataManager().data_length(file))
-#             
-#        for r in data_range:
-#            targets = LinearRegressionDataPreparation().clean_target_data(file, r)
-#            y = LinearRegressionDataPreparation().convert_to_dataframe(targets)
-#            X = LinearRegressionDataPreparation().clean_training_data(file, r)
-#            
-#            # Convert column names to strings 
-#            X.columns = X.columns.astype(str)
-#            y.columns = y.columns.astype(str)
-#
-#            ## Test print dataframes
-#            #print('X: ', type(X), X, '\n')
-#            #print('y: ', type(y), y)
-#
-#            # Linear regression model fit
-#            return model.fit(X,y)
+    def linear_regression_model_fit(self, file, row):
+        """ Generates a linear regression model fit for a row """
+        
+        # Initialize required data
+        model = LinearRegression()
+        #data_range = range(YouTubeChannelDataManager().data_length(file))
+             
+        #for r in data_range:
+        targets = LinearRegressionDataPreparation().clean_target_data(file, row)
+        y = LinearRegressionDataPreparation().convert_to_dataframe(targets)
+        X = LinearRegressionDataPreparation().clean_training_data(file, row)
+        
+        # Convert column names to strings 
+        X.columns = X.columns.astype(str)
+        y.columns = y.columns.astype(str)
+
+        ## Test print dataframes
+        #print('X: ', type(X), X, '\n')
+        #print('y: ', type(y), y)
+
+        # Linear regression model fit
+        return model.fit(X,y)

@@ -161,7 +161,6 @@ class TestLinearRegression(unittest.TestCase):
         self.file = file
         self.data_manager = YouTubeChannelDataManager()
         self.lrprep = LinearRegressionDataPreparation()
-        self.fitdata = FitData()
         
     # # # # # # # #
     # TEST CASES  #
@@ -194,6 +193,16 @@ class TestLinearRegression(unittest.TestCase):
                     FitData().insufficient_data_handling(file, r)
                     assert len(w) > 0
             
-#    def test_linear_regression_model_fit(self):
-#        """ It should return a linear regression model fit for rows with at least two training data points """
+    def test_linear_regression_model_fit(self):
+        """ It should return a linear regression model fit for rows with at least two training data points """
         
+        # Initialize variables
+        file = self.file
+        data_manager = self.data_manager
+        
+        #data_range = range(data_manager.data_length(file))
+        #for r in data_range:
+        
+        row = 1
+        FitData().linear_regression_model_fit(file, row)
+            
