@@ -146,7 +146,7 @@ class LinearRegressionDataPreparation:
 class FitData:
     """ Forms a linear regression fit model """
 
-    def checkskip(self, file):
+    def zero_data_handling(self, file):
         """ Should continue if there is no training data to create a model from """
         
         data_range = range(YouTubeChannelDataManager().data_length(file))
