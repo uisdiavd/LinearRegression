@@ -26,10 +26,8 @@ pd.set_option('display.max_columns', None)
 #    def load
 #
 
-class YouTubeChannelDataManager(object):
+class YouTubeChannelDataManager:
     """ Manages data from raw input """
-#    def __init__(self,csv):
-#        self.csv = csv
         
     def process_yt_channel_data(self, csv):
         """ Returns processed data as DataFrame"""

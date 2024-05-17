@@ -138,8 +138,11 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
         # Check cleaned training data
         for r in data_range:
             checkdata = lrprep.clean_training_data(file, r)[0].values
+            
+            ##Troubleshooting test prints
             #print('checkdata type: ', type(checkdata))
-            print('checkdata: ', checkdata)
+            #print('checkdata: ', checkdata)
+            
             self.assertNotIn(0, checkdata, f'A zero value is still detected in the training data for row {r}')
 #    
 #    def test_zero_data_handling(self):
