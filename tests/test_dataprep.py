@@ -182,7 +182,7 @@ class TestLinearRegression(unittest.TestCase):
             
             #Troubleshooting test prints
             #print('checkdata type: ', type(checkdata))
-            print('checkdata: ', checkdata)
+            #print('checkdata: ', checkdata)
             
             if len(checkdata) == 0:
                 ## Print to check that empty rows are skipped
