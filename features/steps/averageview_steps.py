@@ -1,3 +1,11 @@
+"""
+Data handling steps for linear regression of Average view data
+
+Might be the wrong place for this?
+"""
+import logging
+from behave import when, then
+
 @given(u'the following data from an original data set')
 def step_impl(context):
     pass
