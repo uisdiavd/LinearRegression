@@ -152,12 +152,14 @@ class FitData:
             
         #Troubleshooting test prints
         #print('checkdata type: ', type(checkdata))
-        print('checkdata: ', checkdata)
+        #print('checkdata: ', checkdata)
             
-        if len(checkdata) == 0:
+        if len(checkdata) <= 1:
             warnings.warn(f'Empty training data set skipped for row {row}', Warning)
         else:
             print(f'The model will continue for row {row}')
+            #temporary pass until continuing to regression fit is functional
+            pass
             #return FitData().linear_regression_model_fit(file)
 
 #    def linear_regression_model_fit(self, file, row):

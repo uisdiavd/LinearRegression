@@ -9,6 +9,7 @@ Test cases should be run with
 
 import unittest
 import logging
+import warnings
 from service.models import YouTubeChannelDataManager, LinearRegressionDataPreparation, FitData
 from service import app
 
@@ -178,7 +179,7 @@ class TestLinearRegression(unittest.TestCase):
         # Check if linear regression model fitting is skipped for insufficient training data rows
         for r in data_range:
             checkdata = lrprep.clean_training_data(file, r)[0].values
-            checkreturn = FitData().insufficient_data_handling(file, r)
+            #checkreturn = FitData().insufficient_data_handling(file, r)
             #Troubleshooting test prints
             #print('checkdata type: ', type(checkdata))
             #print('checkdata: ', checkdata)
@@ -188,11 +189,10 @@ class TestLinearRegression(unittest.TestCase):
                 ## Print to check that empty rows are skipped
                 #print('checkdata: ', checkdata)
                 #print(f"Row {r} should be skipped for having insufficient training data")
-                with self.assertWarns(Warning):
-                    
-            else:
-                continue
-        raise NotImplementedError('not finished implementing test yet')
+                #print(f'Checkdata for row {r} identified as <= 1')
+                with warnings.catch_warnings(record = True) as w:
+                    FitData().insufficient_data_handling(file, r)
+                    assert len(w) > 0
             
 #    def test_linear_regression_model_fit(self):
 #        """ It should return a linear regression model fit for rows with at least two training data points """
