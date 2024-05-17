@@ -198,11 +198,22 @@ class TestLinearRegression(unittest.TestCase):
         
         # Initialize variables
         file = self.file
-        data_manager = self.data_manager
         
+        #Initialization for iterating through rows
+        #data_manager = self.data_manager
         #data_range = range(data_manager.data_length(file))
         #for r in data_range:
         
         row = 1
-        FitData().linear_regression_model_fit(file, row)
-            
+        LRmodel = FitData().linear_regression_model_fit(file, row)
+        coef = LRmodel.coef_
+        intercept = LRmodel.intercept_
+        coeftype = type(coef)
+        itype = type(intercept)
+        self.assertEqual(f'{coeftype}', "<class 'numpy.ndarray'>")
+        self.assertEqual(f'{itype}', "<class 'numpy.ndarray'>")
+        self.assertEqual(len(coef), 1)
+        self.assertEqual(len(coef[0]), 2)
+        self.assertEqual(len(intercept), 1)
+        
+        #should add value assertions

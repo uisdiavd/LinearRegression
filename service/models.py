@@ -170,7 +170,7 @@ class FitData:
         #data_range = range(YouTubeChannelDataManager().data_length(file))
              
         #for r in data_range:
-        targets = LinearRegressionDataPreparation().clean_target_data(file, row)
+        targets, testreturn = LinearRegressionDataPreparation().clean_target_data(file, row)
         y = LinearRegressionDataPreparation().convert_to_dataframe(targets)
         X = LinearRegressionDataPreparation().clean_training_data(file, row)
         
@@ -181,6 +181,11 @@ class FitData:
         ## Test print dataframes
         #print('X: ', type(X), X, '\n')
         #print('y: ', type(y), y)
-
+        
+        ##Test print target and training data
+        print(f'Training data: \n {X}')
+        print(f'Target data: \n {y}')
+        #return y
+    
         # Linear regression model fit
         return model.fit(X,y)
