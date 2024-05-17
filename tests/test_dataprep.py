@@ -185,7 +185,8 @@ class TestLinearRegression(unittest.TestCase):
             print('checkdata: ', checkdata)
             
             if len(checkdata) == 0:
-                #self.assertRaises(ValueError, fitdata.checkskip(file))
+                ## Print to check that empty rows are skipped
+                #print(f"Row {r} has been skipped for having no training data")
                 self.assertWarns(Warning)
             else:
                 continue
