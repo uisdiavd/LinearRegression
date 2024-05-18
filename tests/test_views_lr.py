@@ -74,7 +74,7 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
         lrprep = self.lrprep
         
         for r in data_range:
-            data = lrprep.extract_training_data_for_row(file, r)
+            data = lrprep.extract_target_data_for_row(file, r)
             for l,d in enumerate(data):
                 ## Troubleshooting print: index of value being evaluated
                 #print('l value: ', l)
@@ -84,8 +84,8 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
                     #print(entry)
                     self.assertIsNotNone(entry)
 
-    def test_missing_target_data_handling(self):
-        """ It should remove target data corresponding to null and zero values from target data """
+    def test_missing_training_data_handling(self):
+        """ It should remove training data corresponding to null and zero values from training data """
         
         # Initialize variables
         file = self.file
@@ -93,10 +93,10 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
         data_range = range(data_length)
         lrprep = self.lrprep
         
-        # Check cleaned target data
+        # Check cleaned training data
         for r in data_range:
-            checkdata, removed_data_indexes = lrprep.clean_target_data(file, r)
-            data = LinearRegressionDataPreparation().extract_training_data_for_row(file, r)
+            checkdata, removed_data_indexes = lrprep.clean_training_data(file, r)
+            data = LinearRegressionDataPreparation().extract_target_data_for_row(file, r)
             
             ## Test prints
             #print('row: ', r)
@@ -107,27 +107,27 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
             self.assertEqual(len(checkdata), len(data) - len(removed_data_indexes))
     
     def test_convert_to_dataframe(self):
-        """Test that the model should return dataframes for both training and target data"""
+        """Test that the model should return dataframes for both target and training data"""
         # Initialize variables
         file = self.file
         data_range = range(YouTubeChannelDataManager().data_length(file))
              
         for r in data_range:
-            convertdata = LinearRegressionDataPreparation().clean_training_data(file, r)
+            convertdata = LinearRegressionDataPreparation().clean_target_data(file, r)
             data = LinearRegressionDataPreparation().convert_to_dataframe(convertdata)
             checkdata = type(data)
             self.assertEqual(f"{checkdata}", "<class 'pandas.core.frame.DataFrame'>", "Object 'data' not converted to a DataFrame")
 
-            converttargets = LinearRegressionDataPreparation().clean_target_data(file, r)
-            targets = LinearRegressionDataPreparation().convert_to_dataframe(converttargets)
-            checktargets = type(targets)
-            self.assertEqual(f"{checktargets}", "<class 'pandas.core.frame.DataFrame'>", "Object 'targets' not converted to a DataFrame")
+            converttrainings = LinearRegressionDataPreparation().clean_training_data(file, r)
+            trainings = LinearRegressionDataPreparation().convert_to_dataframe(converttrainings)
+            checktrainings = type(trainings)
+            self.assertEqual(f"{checktrainings}", "<class 'pandas.core.frame.DataFrame'>", "Object 'trainings' not converted to a DataFrame")
     
-    def test_missing_training_data_handling(self):
-        """ It should remove null and zero values from training data """
+    def test_missing_target_data_handling(self):
+        """ It should remove null and zero values from target data """
         #
         # Set up file, use to define data range, use in entry iteration for loop
-        # Entry iteration calls lrprep.clean_training_data() 
+        # Entry iteration calls lrprep.clean_target_data() 
         # and checks for existence of value 0
         #
         
@@ -136,15 +136,15 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
         data_range = range(YouTubeChannelDataManager().data_length(file))
         lrprep = self.lrprep
         
-        # Check cleaned training data
+        # Check cleaned target data
         for r in data_range:
-            checkdata = lrprep.clean_training_data(file, r)[0].values
+            checkdata = lrprep.clean_target_data(file, r)[0].values
             
             ##Troubleshooting test prints
             #print('checkdata type: ', type(checkdata))
             #print('checkdata: ', checkdata)
             
-            self.assertNotIn(0, checkdata, f'A zero value is still detected in the training data for row {r}')
+            self.assertNotIn(0, checkdata, f'A zero value is still detected in the target data for row {r}')
     
 class TestLinearRegression(unittest.TestCase):
     """ Test functionality of linear regression """
@@ -167,7 +167,7 @@ class TestLinearRegression(unittest.TestCase):
     # # # # # # # #
     
     def test_insufficient_data_handling(self):
-        """ It should skip linear regression model fitting when training dataframe is empty """
+        """ It should skip linear regression model fitting when target dataframe is empty """
         
         # Initialize variables
         file = self.file
@@ -175,9 +175,9 @@ class TestLinearRegression(unittest.TestCase):
         data_range = range(data_manager.data_length(file))
         lrprep = self.lrprep
         
-        # Check if linear regression model fitting is skipped for insufficient training data rows
+        # Check if linear regression model fitting is skipped for insufficient target data rows
         for r in data_range:
-            checkdata = lrprep.clean_training_data(file, r)[0].values
+            checkdata = lrprep.clean_target_data(file, r)[0].values
             #checkreturn = FitData().insufficient_data_handling(file, r)
             #Troubleshooting test prints
             #print('checkdata type: ', type(checkdata))
@@ -187,14 +187,14 @@ class TestLinearRegression(unittest.TestCase):
             if len(checkdata) <= 1:
                 ## Print to check that empty rows are skipped
                 #print('checkdata: ', checkdata)
-                #print(f"Row {r} should be skipped for having insufficient training data")
+                #print(f"Row {r} should be skipped for having insufficient target data")
                 #print(f'Checkdata for row {r} identified as <= 1')
                 with warnings.catch_warnings(record = True) as w:
                     FitData().insufficient_data_handling(file, r)
                     assert len(w) > 0
             
     def test_linear_regression_model_fit(self):
-        """ It should return a linear regression model fit for rows with at least two training data points """
+        """ It should return an accurate coefficient and intercept from the linear regression model fit for the first row of data """
         
         # Initialize variables
         file = self.file
@@ -204,7 +204,7 @@ class TestLinearRegression(unittest.TestCase):
         #data_range = range(data_manager.data_length(file))
         #for r in data_range:
         
-        row = 1
+        row = 0
         LRmodel = FitData().linear_regression_model_fit(file, row)
         coef = LRmodel.coef_
         intercept = LRmodel.intercept_
@@ -213,7 +213,8 @@ class TestLinearRegression(unittest.TestCase):
         self.assertEqual(f'{coeftype}', "<class 'numpy.ndarray'>")
         self.assertEqual(f'{itype}', "<class 'numpy.ndarray'>")
         self.assertEqual(len(coef), 1)
-        self.assertEqual(len(coef[0]), 2)
         self.assertEqual(len(intercept), 1)
+        self.assertAlmostEqual(36905.64154215,coef[0][0])
+        self.assertAlmostEqual(557929.72167922, intercept[0])
         
         #should add value assertions
