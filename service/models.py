@@ -84,45 +84,51 @@ class LinearRegressionDataPreparation:
         
         # Define training data as a list for use with removing corresponding missing values from target data
         trainings = [1, 3, 7, 14, 30, 60]
-
-        # Initialize adjustment variable for training list size decreasing after removing a value
-        adjustment = 0
         
+        # Initialize adjustment variable for target list size decreasing after removing a value
+        adjustment = 0
+
         # Iterate over data to clean null or zero values in target data and corresponding training data
         for l,d in enumerate(data):
             ## Test print for troubleshooting, displays index of value being evaluated
-            #print('l value: ', l)
+            #print('index evaluation: ', l)
             
             # If target data point is 0, then clean corresponding training value
             if data[l] == 0:
                 ## Test print confirms that the if statement is running correctly
-                #print('Zero data row: ', row, '\n',  'Zero data index: ', l)
-                #print('Adjustment: ', adjustment)
+                #print('IDENTIFIED: \n Zero data row: ', row, '\n',  'Zero data index: ', l)
 
-                # traininged index accounts for changing length of training list after removing a value
+                # Targeted index accounts for changing length of target list after removing a value
                 t = l - adjustment
                 ##Test print training index for troubleshooting
-                #print('training index: ', t)
+                #print('training index: ', l)
 
                 # Value to be removed from the training values list
                 delvalue = trainings[t]
                 trainings.remove(delvalue)
                 
+                ## Test print to show value of removed list member
+                #print(f'Deleting value: {delvalue}')
+                
                 # Add index to removed_data_indexes dict
-                removed_data_indexes.append(tuple((row, l)))
+                removed_data_indexes.append(tuple((row, t)))
+                
+                ## Test print to show removed data indexes
                 #print('removed_data_indexes: ', removed_data_indexes)
 
-                ## Test print with latest training value corresponding to target data zero value removed
+                # Test print with latest training value corresponding to target data zero value removed
                 #print('trainings after zero removed: ', trainings)
-
-                # Increase adjustment value to account for length of training list after removing a value
+                
+                # Increase adjustment value to account for length of target list after removing a value
                 adjustment += 1
+                continue
 
             ## Test print data row number with final set of training values
             #print('Row: ', r)
             #print('training values: ', trainings)
+            
             return trainings, removed_data_indexes
-
+        
     def convert_to_dataframe(self, data):
         """ Converts array to dataframe """
         return pd.DataFrame(data)
@@ -160,7 +166,7 @@ class FitData:
         if len(checkdata) <= 1:
             warnings.warn(f'Empty target data set skipped for row {row}', Warning)
         else:
-            print(f'The model will continue for row {row}')
+            #print(f'The model will continue for row {row}')
             ##temporary pass until continuing to regression fit is functional
             #pass
             return FitData().linear_regression_model_fit(file, row)
@@ -170,9 +176,7 @@ class FitData:
         
         # Initialize required data
         model = LinearRegression()
-        #data_range = range(YouTubeChannelDataManager().data_length(file))
-             
-        #for r in data_range:
+
         trainings, testreturn = LinearRegressionDataPreparation().clean_training_data(file, row)
         X = LinearRegressionDataPreparation().convert_to_dataframe(trainings)
         y = LinearRegressionDataPreparation().clean_target_data(file, row)
