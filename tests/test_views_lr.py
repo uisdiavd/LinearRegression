@@ -95,6 +95,10 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
         
         # Check cleaned training data
         for r in data_range:
+            # Skip if data has insufficient length
+            if len(lrprep.clean_target_data(file, r)) <= 1:
+                continue
+            
             checkdata, removed_data_indexes = lrprep.clean_training_data(file, r)
             data = LinearRegressionDataPreparation().extract_target_data_for_row(file, r)
             
@@ -103,7 +107,7 @@ class TestLinearRegressionDataPreparation(unittest.TestCase):
             #print('checkdata: ', checkdata)
             #print('data: ', data)
             #print('rdi: ', removed_data_indexes)
-            
+
             self.assertEqual(len(checkdata), len(data) - len(removed_data_indexes))
     
     def test_convert_to_dataframe(self):
@@ -193,28 +197,40 @@ class TestLinearRegression(unittest.TestCase):
                     FitData().insufficient_data_handling(file, r)
                     assert len(w) > 0
             
-    def test_linear_regression_model_fit(self):
+    def test_lr_model_first_coeff_and_intercept(self):
         """ It should return an accurate coefficient and intercept from the linear regression model fit for the first row of data """
         
         # Initialize variables
         file = self.file
         
-        #Initialization for iterating through rows
-        #data_manager = self.data_manager
-        #data_range = range(data_manager.data_length(file))
-        #for r in data_range:
-        
         row = 0
         LRmodel = FitData().linear_regression_model_fit(file, row)
         coef = LRmodel.coef_
         intercept = LRmodel.intercept_
-        coeftype = type(coef)
-        itype = type(intercept)
-        self.assertEqual(f'{coeftype}', "<class 'numpy.ndarray'>")
-        self.assertEqual(f'{itype}', "<class 'numpy.ndarray'>")
-        self.assertEqual(len(coef), 1)
-        self.assertEqual(len(intercept), 1)
+        
         self.assertAlmostEqual(36905.64154215,coef[0][0])
         self.assertAlmostEqual(557929.72167922, intercept[0])
         
-        #should add value assertions
+    def test_linear_regression_model_fit(self):
+        """ For each row, the coeff and intercept should be arrays of length 1 """
+        file = self.file
+        lrprep = self.lrprep
+        
+        #Initialization for iterating through rows
+        data_manager = self.data_manager
+        data_range = range(data_manager.data_length(file))
+        
+        for r in data_range:
+            # Skip if data has insufficient length
+            if len(lrprep.clean_target_data(file, r)) <= 1:
+                continue
+            
+            LRmodel = FitData().insufficient_data_handling(file, r)
+            coef = LRmodel.coef_
+            intercept = LRmodel.intercept_
+            coeftype = type(coef)
+            itype = type(intercept)
+            self.assertEqual(f'{coeftype}', "<class 'numpy.ndarray'>")
+            self.assertEqual(f'{itype}', "<class 'numpy.ndarray'>")
+            self.assertEqual(len(coef), 1)
+            self.assertEqual(len(intercept), 1)
