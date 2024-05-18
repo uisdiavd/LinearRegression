@@ -31,7 +31,7 @@ class YouTubeChannelDataManager:
     """ Manages data from raw input """
         
     def process_yt_channel_data(self, csv):
-        """ Returns processed data as DataFrame"""
+        """ Returns processed data as DataFrame """
         # Read the csv file into a DataFrame
         df = pd.read_csv(csv)
 
@@ -161,9 +161,9 @@ class FitData:
             warnings.warn(f'Empty target data set skipped for row {row}', Warning)
         else:
             print(f'The model will continue for row {row}')
-            #temporary pass until continuing to regression fit is functional
-            pass
-            #return FitData().linear_regression_model_fit(file, row)
+            ##temporary pass until continuing to regression fit is functional
+            #pass
+            return FitData().linear_regression_model_fit(file, row)
 
     def linear_regression_model_fit(self, file, row):
         """ Generates a linear regression model fit for a row """
