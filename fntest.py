@@ -7,6 +7,7 @@ from service import app
 import pandas as pd
 
 file = 'top_200_youtubers.csv'
+print("dfr: \n", YouTubeChannelDataManager().process_yt_channel_data(file))
 
 #""" Test if only one entry exists for each country when preparing the 'top_200_youtubers.csv' file """
 #dfr = YouTubeChannelDataManager().process_yt_channel_data(file)
@@ -23,21 +24,25 @@ file = 'top_200_youtubers.csv'
 #    else:
 #        start += 1
     
-df = pd.read_csv(file)
-
-# Set columns of target data
-cols = ['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']
-counter = 1
-
-# Set groupby_filter
-groupby_filter = 'Country'
-
-# Clean country formatting
-for country in df['Country']:
-    df['Country'][counter] = str(country).strip()
-    print(counter, country)
-    counter += 1
-
-views = df.groupby(groupby_filter)[cols].mean().fillna(0)
-dfr = pd.DataFrame(views).reset_index()
-print(dfr)
+#df = pd.read_csv(file)
+#print(type(df))
+#
+## Set columns of target data
+#cols = ['Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day']
+##counter = 0
+#
+## Set groupby_filter
+#groupby_filter = 'Country'
+#
+#df['Country'] = df['Country'].str.strip()
+#
+##
+### Clean country formatting
+##for country in df['Country']:
+##    country = str(country).strip()
+##    df['Country'][counter] = country
+##    counter += 1
+#
+#views = df.groupby(groupby_filter)[cols].mean().fillna(0)
+#dfr = pd.DataFrame(views).reset_index()
+#print(dfr)
