@@ -199,3 +199,13 @@ class FitData:
     
         # Linear regression model fit
         return model.fit(X, y)
+    
+    def linear_regression_prediction(self, file, row, predict_at):
+        """ Predicts value for a specific training value """
+        LRmodel = FitData().linear_regression_model_fit(file, row)
+        coef = LRmodel.coef_[0][0]
+        intercept = LRmodel.intercept_[0]
+        
+        prediction = coef * predict_at + intercept
+        
+        return prediction
