@@ -209,3 +209,22 @@ class FitData:
         prediction = coef * predict_at + intercept
         
         return prediction
+    
+class TableFunction:
+    """ Table functions """
+    def add_prediction_to_table(self, file, predict_at):
+        data_range = range(YouTubeChannelDataManager().data_length(file))
+        dfr = YouTubeChannelDataManager().process_yt_channel_data(file)
+        result = []
+        for r in data_range:
+            checkdata = LinearRegressionDataPreparation().clean_target_data(file, r)[0].values
+            
+            if len(checkdata) > 1:
+                prediction = FitData().linear_regression_prediction(file, r, predict_at)
+                result.append(prediction)
+            else:
+                result.append('0')
+        
+        dfr["90 Day Prediction"] = result
+        
+        return dfr
