@@ -10,7 +10,7 @@ Test cases should be run with
 import unittest
 import logging
 import warnings
-from service.models import YouTubeChannelDataManager, LinearRegressionDataPreparation, FitData
+from service.models import YouTubeChannelDataManager, LinearRegressionDataPreparation, FitData, TableFunction
 from service import app
 
 class TestYouTubeChannelDataManager(unittest.TestCase):
@@ -249,3 +249,39 @@ class TestLinearRegression(unittest.TestCase):
         prediction90 = FitData().linear_regression_prediction(file, row, predict_at)
         
         self.assertAlmostEqual(prediction90, 3879437.46, places = 3)
+
+class TestTableFunction(unittest.TestCase):
+    """ Test functionality of adding data to table """
+    @classmethod
+    def setUpClass(cls):
+        """This runs once before the entire test suite"""
+        app.config["TESTING"] = True
+        app.config["DEBUG"] = False
+        app.logger.setLevel(logging.INFO)
+        
+    def setUp(self):
+        # Test data setup
+        file = 'top_200_youtubers.csv'
+        self.file = file
+        
+        data_manager = YouTubeChannelDataManager()
+        self.dfr = data_manager.process_yt_channel_data(file)
+        
+        self.data_manager = YouTubeChannelDataManager()
+        self.lrprep = LinearRegressionDataPreparation()
+        
+    # # # # # # # #
+    # TEST CASES  #
+    # # # # # # # #
+    
+    def test_add_prediction_to_table(self):
+        """ Tests length of data added to the table """
+        # Initialize variables
+        file = self.file
+        dfr = self.dfr
+        
+        # Add predictions to table
+        predict_at = 90
+        dfr = TableFunction().add_prediction_to_table(file, predict_at)
+        
+        self.assertEqual(len(dfr['90 Day Prediction']), len(dfr['Country']))
