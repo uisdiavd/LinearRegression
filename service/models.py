@@ -41,6 +41,9 @@ class YouTubeChannelDataManager:
         # Set groupby_filter
         groupby_filter = 'Country'
         
+        # Clean country formatting
+        df['Country'] = df['Country'].str.strip()
+        
         # Prepare data for regression
         views = df.groupby(groupby_filter)[cols].mean().fillna(0)
         dfr = pd.DataFrame(views).reset_index()
