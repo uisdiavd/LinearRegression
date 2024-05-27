@@ -198,18 +198,18 @@ class TestLinearRegression(unittest.TestCase):
                     assert len(w) > 0
             
     def test_lr_model_first_coeff_and_intercept(self):
-        """ It should return an accurate coefficient and intercept from the linear regression model fit for the first row of data """
+        """ It should return an accurate coefficient and intercept from the linear regression model fit """
         
         # Initialize variables
         file = self.file
         
         row = 0
         LRmodel = FitData().linear_regression_model_fit(file, row)
-        coef = LRmodel.coef_
-        intercept = LRmodel.intercept_
+        coef = LRmodel.coef_[0][0]
+        intercept = LRmodel.intercept_[0]
         
-        self.assertAlmostEqual(36905.64154215,coef[0][0])
-        self.assertAlmostEqual(557929.72167922, intercept[0])
+        self.assertAlmostEqual(36905.64154215,coef)
+        self.assertAlmostEqual(557929.72167922, intercept)
         
     def test_linear_regression_model_fit(self):
         """ For each row, the coeff and intercept should be arrays of length 1 """
@@ -234,3 +234,18 @@ class TestLinearRegression(unittest.TestCase):
             self.assertEqual(f'{itype}', "<class 'numpy.ndarray'>")
             self.assertEqual(len(coef), 1)
             self.assertEqual(len(intercept), 1)
+            
+    def test_linear_regression_prediction(self):
+        """ It should return an accurate prediction """
+        file = self.file
+        row = 0
+        predict_at = 90
+        
+        #LRmodel = FitData().linear_regression_model_fit(file, row)
+        #coef = LRmodel.coef_[0][0]
+        #intercept = LRmodel.intercept_[0]
+        
+        #prediction90 = coef * predict_at + intercept
+        prediction90 = FitData().linear_regression_prediction(file, row, predict_at)
+        
+        self.assertAlmostEqual(prediction90, 3879437.46, places = 3)
