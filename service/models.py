@@ -1,8 +1,14 @@
 #
 """
 Prompt:
-Please create a new table with the countries on the list and the average likes of each channel in that country.
-Next, add a column that shows the expected views for the next 90 days based on the trends found the Avg. 1 Day views up until the Avg. 60 Day views column.
+1. Create a new table with the countries on the list and the average likes of each channel in that country.
+2. Add a column that shows the expected views for the next 90 days based on the trends found the Avg. 1 Day views up until the Avg. 60 Day views column.
+"""
+
+"""
+Final output called with TableFunction().add_prediction_to_table(file, predict_at)
+File should be a csv with columns 'Country' and views data for 'Avg. 1 Day', 'Avg. 3 Day', 'Avg. 7 Day', 'Avg. 14 Day', 'Avg. 30 day', 'Avg. 60 day' for YouTuber data
+predict_at is the training value to predict the views data for
 """
 
 import pandas as pd
@@ -12,20 +18,6 @@ from sklearn.linear_model import LinearRegression
 
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
-
-#
-#class YouTubeChannel:
-#    def __init__(self, csv):
-#        self.Country
-#        self.Avg. 1 Day
-#        self.Avg. 3 Day
-#        self.Avg. 7 Day
-#        self.Avg. 14 Day
-#        self.Avg. 30 day
-#        self.Avg. 60 day
-#    
-#    def load
-#
 
 class YouTubeChannelDataManager:
     """ Manages data from raw input """
