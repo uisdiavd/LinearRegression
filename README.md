@@ -1,7 +1,8 @@
 -- ABOUT --
 Personal project from scratch to prepare data from a csv, perform linear regression to predict values, and output a table with the predicted values.
 
-== RUN INSTRUCTIONS ==
+== -- RUN INSTRUCTIONS --
+(sorry, requirements file is missing)
 Linear regression runs on the provided file via test cases (nosetests) as a baseline case for the program. Modifying the provided csv file will break the test cases.
 ======================
 
